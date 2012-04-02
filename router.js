@@ -10,12 +10,14 @@ goog.provide('mvc.Router');
 goog.require('goog.array');
 goog.require('goog.events');
 goog.require('goog.History');
+goog.require('goog.history.Html5History');
+
 
 /**
  * @constructor
  */
 mvc.Router = function() {
-    this.checkhistorysupport();
+    this.history_=this.checkhistorysupport();
     goog.events.listen(this.history_, goog.history.EventType.NAVIGATE,
         this.onChange_, false, this);
     this.history_.setEnabled(true);
@@ -26,12 +28,13 @@ mvc.Router = function() {
 */
 mvc.prototype.checkhistorysupport=function (){
     if(goog.history.Html5History.isSupported()){
-    this.history_= new goog.history.Html5History();this.history_.setUseFragment(false);
+    var history= new goog.history.Html5History();history.setUseFragment(false);
 }
 else
 {
-    this.history_=new goog.History();
+   var history=new goog.History();
 }
+return history;
 };
 /**
  * pass through the fragment for the URL
